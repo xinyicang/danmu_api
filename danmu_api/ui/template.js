@@ -24,6 +24,10 @@ export const HTML_TEMPLATE = /* html */ `
     <title>LogVar弹幕API</title>
     <link rel="icon" type="image/jpg" href="https://i.mji.rip/2025/09/27/eedc7b701c0fa5c1f7c175b22f441ad9.jpeg">
     <link rel="apple-touch-icon" href="https://i.mji.rip/2025/09/27/eedc7b701c0fa5c1f7c175b22f441ad9.jpeg">
+    <script>
+      window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/speed-insights/script.js"></script>
     <style>${baseCssContent}</style>
     <style>${componentsCssContent}</style>
     <style>${formsCssContent}</style>
