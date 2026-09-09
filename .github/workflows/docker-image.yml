@@ -51,10 +51,17 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # 清理 Docker Hub 用户名中可能存在的空格/换行，避免 Docker tag 格式错误
+      - name: Normalize Docker Hub username
+        shell: bash
+        run: |
+          DOCKER_USERNAME_CLEAN="$(printf '%s' "${{ secrets.DOCKER_USERNAME }}" | tr -d '[:space:]')"
+          echo "DOCKER_USERNAME_CLEAN=$DOCKER_USERNAME_CLEAN" >> "$GITHUB_ENV"
+
       - name: Build and Push Docker image
         run: |
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            docker buildx build --platform linux/amd64,linux/arm64 -t "${{ secrets.DOCKER_USERNAME }}/danmu-api:${{ env.VERSION_TAG }}" -t "${{ secrets.DOCKER_USERNAME }}/danmu-api:latest" --push .
+            docker buildx build --platform linux/amd64,linux/arm64 -t "${DOCKER_USERNAME_CLEAN}/danmu-api:${{ env.VERSION_TAG }}" -t "${DOCKER_USERNAME_CLEAN}/danmu-api:latest" --push .
           else
-            docker buildx build --platform linux/amd64,linux/arm64 -t "${{ secrets.DOCKER_USERNAME }}/danmu-api:${{ env.VERSION_TAG }}" --push .
+            docker buildx build --platform linux/amd64,linux/arm64 -t "${DOCKER_USERNAME_CLEAN}/danmu-api:${{ env.VERSION_TAG }}" --push .
           fi
